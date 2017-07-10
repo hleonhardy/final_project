@@ -1,0 +1,111 @@
+Pseudocode for Black Box Game final project:
+
+
+
+
+Section 1: Set up the grid:
+
+	i) The total grid will be a 9x9 
+	ii) The inner 7x7 grid will be the “playing space”
+	iii) All the spaces on the edge will be “edge spaces” 
+		-Edge spaces will be labeled with coordinates
+		-Edge space corners will not be labeled
+	iv) The inner 5x5 grid will be the “placement space”
+	v) The space in-between the edge spaces and the 7x7 playing space will be called “outside spaces”
+	vi) Marbles can only be placed inside the placement space- NOT in edge spaces or outside spaces
+
+
+
+
+Section 2: Player 1’s turn:
+
+	i) Ask player 1 where they would like to place their marbles
+		-if they try to place their marbles outside the placement space, they will be prompted to try again
+	ii) Player 1 will place 3 marbles in the placement space
+	
+
+
+
+Section 3: Player 2’s turn:
+
+	A) Ask player 1 to choose an edge space to send the laser beam through
+	B) Establish direction-this is based on which side the edge space is on
+		-For example, if they choose an edge space on the left hand side, the direction will be to the right.
+	C) Move forward in direction one space to the first playing space (the first space in the playing space grid)
+	
+
+	Subsection: “Laser’s turn”: laser moves inside the grid until it reaches the edge 
+
+
+		D) Check the diagonal spaces that are forward in direction (the two spaces adjacent to one space forward)
+			-If both diagonals are an outside space:
+				-Move laser position forward in direction twice (it will end up in an edge space)
+				-The “Laser’s turn” immediately ends (See part G)
+			-If both diagonal spaces are occupied by a marble:
+				-Computer puts the laser back in its original space (the space it came from)
+				 (No matter where the third marble is, the laser will always end up back in the space where it started)
+				-The “laser’s turn” immediately ends (See part G) 
+			-If only one diagonal space is occupied:
+				-Direction gets changed to the opposite of which diagonal the marble is in
+				 (if the diagonal is forward and to the right, the direction will be changed to left, etc)
+				-Go back to part D) 
+			-If no diagonal spaces are occupied, move on to part F)
+		F) Check space directly forward in direction
+			-If this space is occupied by a marble:
+				-This is a reflection, so similarly to when both diagonals are occupied, laser will always end up where it started
+				-Computer puts the laser back in its original space
+				-The “laser’s turn” immediately ends (See part G)
+			-If this space is not occupied
+				-Laser moves forward in direction one space
+				-Go back to part D)
+
+	G) When the Laser’s turn is over:
+		-Computer adds one turn to the total number of laser turns. This is player 2’s total score. 
+		-Computer asks player two if they would like to either shoot another beam or guess where the marbles are.
+			-If they choose to shoot another beam, repeat section 3 starting at part A).
+			-If they choose to guess where the marbles are, see part H).
+
+	H) Guessing where the marbles are:
+		-Player two enters the coordinates of the marbles, computer checks to see if there are marbles there
+			-If player two has guessed any of the marbles incorrectly, 2 points per incorrect marble are added to player 2’s score 
+				-Computer will ask if they want to continue guessing or shoot another beam
+					-If they shoot another beam, start from section 3 part A)
+					-If they continue guessing, go back to the beginning of part H)
+			-If player enters the marbles correctly, no points will be added to the score, move on to section 4.
+
+
+
+
+Section 4: When player 2 ends their turn:
+
+	i) Player 2 now has a total score (number of lasers fired plus 2 points per any incorrectly guessed marble position) 
+	ii) Player 2 and player 1 will switch roles, starting with player 2 being asked to place the marbles (section 2).
+	iii) Player 1 will guess where the marbles are, and their total score will be recorded (section 3)
+	iv) Player 1 and player 2’s scores will be compared-whoever has the lowest score will be the winner!
+	    (end of game)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+				
