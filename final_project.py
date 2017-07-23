@@ -366,6 +366,8 @@ def check_diagonals(grid, laser_space, direction):
         elif grid[left_row][left_column] == 0 or grid[right_row][right_column] == 0:
             print "one is an outside space and one is unoccupied"
             diagonal = "both_empty"
+    elif grid[left_row][left_column] == 2 and grid[right_row][right_column] == 2:
+        diagonal = "both_edges"
 
     #otherwise both of them are empty =]
     else:
@@ -527,6 +529,12 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
             #This will first move forward two spaces and that will be the final laser space
             final_laser_space = move_forward_two(laser_space, direction)
             print "final laser space is {}".format(final_laser_space)
+            laser_still_moving = False
+
+        elif diagonals == "both_edges":
+            #since both of the diagonals are edges the laser space has to move forward one space only
+            final_laser_space = move_one_space_forward(laser_space, direction)
+            print "final_laser_space is {}".format(final_laser_space)
             laser_still_moving = False
 
         elif diagonals == "both_empty":
