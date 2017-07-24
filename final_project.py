@@ -661,6 +661,10 @@ def check_foward_space(forward_space, grid):
         print "There's a marble in the forward space"
         forward_space = "marble"
 
+    elif grid[forward_row][forward_column] == 2:
+        print "This is an edge space."
+        forward_space = "edge"
+
     else:
         print "Theres nothing in the forward space"
         forward_space = "unoccupied"
@@ -730,6 +734,10 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
                 final_laser_space = reflection(first_laser_space)
                 print "final laser space is {}".format(final_laser_space)
                 laser_still_moving = False
+
+            elif forward_space == "edge":
+                final_laser_space = move_one_space_forward(laser_space, direction)
+                laser_still_moving = False 
 
             elif forward_space == "unoccupied":
                 laser_space = move_one_space_forward(laser_space, direction)
@@ -861,7 +869,7 @@ def players_turn (player_total):
         no_laser_out = []
 
         laser_display(no_laser_in, no_laser_out, "demo")
-        
+
 
         #The first space player 2 chooses to send the laser
         first_laser_space = laser_shooting_loop(grid)
