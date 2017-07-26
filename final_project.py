@@ -1,3 +1,6 @@
+#in displays.py we have marble display and laser display functions:
+import displays  
+
 
 #functions that will happen in the beginning of the game
 
@@ -33,64 +36,58 @@ def set_up_grid():
 
 
 
+def hit_next():
+    """breaks up the instructions by pausing and letting the user type n or next"""
+
+    #This doesn't return anything and it doesn't matter what they type
+    #It just helps break up the instructions so that they won't be reading a billion lines at once.
+    print "type 'next' or 'n' to see the next part of the instructions"
+    see_next = raw_input("> ")
+    
+
+
 
 def instructions():
     """prints set of instructions on how to play the game"""
+
+    #Displays instructions, features some demos with marble placing and laser shooting.
+    #uses the hit next function to break it up a little
+
     print 
     print "Alright, so you wanna learn how to play the game."
     print "First we'll start with player 1:"
     print "Player 1 will choose locations in the black box (on the grid) to hide 3 marbles."
     print "Marbles are not allowed to be placed in the edge spaces, so please place them appropriately."
     print
-    print "type 'next' or 'n' to see the next part of the instructions"
 
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
-
-
+    hit_next()
 
     demo_marble_1 = [2,2]
     demo_marble_2 = [2,4]
     demo_marble_3 = [4,6]
 
-    marble_display("no", demo_marble_1, demo_marble_2, demo_marble_3)
+    displays.marble_display("no", demo_marble_1, demo_marble_2, demo_marble_3)
     print "Available marble spaces are represented by the '*' symbol."
     print "Here you can see the spaces available to place marbles in."
 
-    print
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
-
+    hit_next()
 
     print "The first player will be prompted to enter the (row, column) for 3 marbles."
     print "Let's pretend we entered (3,3), (3,5), and (5,7) for our marble locations."
 
-    print "type 'next' or 'n' to see the next part of the instructions"
+    hit_next()
 
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
-
-
-    marble_display("yes",demo_marble_1, demo_marble_2, demo_marble_3)
+    displays.marble_display("yes",demo_marble_1, demo_marble_2, demo_marble_3)
     print "Here is where our marbles are! "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
-
+    hit_next()
 
     print "Once player 1 has successfully placed 3 marbles, player 2 will begin."
     print "Player 2's job is to try to guess where player 1 has hidden the marbles."
     print "In order to do this, player 2 will send a laser beam through the box."
     print "Lasers must be sent through the very outer edges of the box, so choose accordingly."
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     demo_laser_in_1 = [3,1]
     demo_laser_out_1 = [3,1]
@@ -101,42 +98,30 @@ def instructions():
     demo_laser_in_3 = [9,4]
     demo_laser_out_3 = [9,4]
 
-    laser_display(demo_laser_in_1, demo_laser_out_1, "demo")
+    displays.laser_display(demo_laser_in_1, demo_laser_out_1, "demo")
     print "Here are the available spaces (the 'o' spaces) that you can choose to send your laser through."
     print "These spaces represent the edge of the black box."
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     print "The laser, after being sent into the box, will interact with the marbles and then exit the box."
     print "There are a few different ways the laser can interact with the marbles."
     print "Here are the different ways: "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     print "1. Direct Reflection: "
     print "if the laser hits a marble head on, it will reflect off the marble and go back the way it came. "
     print "for example, because we have a marble placed in (row 3, column 3), "
     print " we can get a direct reflection if we send our laser into the space (row 3, column 1). "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower() 
+    hit_next()
     
-    laser_display(demo_laser_in_1, demo_laser_out_1, "laser")  
+    displays.laser_display(demo_laser_in_1, demo_laser_out_1, "laser")  
     print "This is what it will look like when player 2 selects the space listed previously. "
     print "The laser went in, reflected off the marble in (3,3), and came out the same space. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()  
+    hit_next()  
 
     print "2. Deflection: "
     print "If the laser hits the side of the marble, it will be deflected 90 degrees. "
@@ -145,10 +130,7 @@ def instructions():
     print "that the marble is in and then switching its direction 90 degrees from whichever corner "
     print "of the box that it hit. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()   
+    hit_next()   
 
     print "That was probably confusing, so here's an example. "
     print "Let's go back to our marble in the space (3,3). "
@@ -157,20 +139,14 @@ def instructions():
     print "Once there, the laser will hit the lower left corner of the marble in (3,3). "
     print "It will then be deflected 90 degrees to the left and go out of the box via row 4."
 
-    print "type 'next' or 'n' to see the next part of the instructions"
+    hit_next()
 
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
-
-    laser_display(demo_laser_in_2, demo_laser_out_2, "laser")
+    displays.laser_display(demo_laser_in_2, demo_laser_out_2, "laser")
     print "Here you can see the laser entering through (9,2) and exiting out (4,1). "
     print "We can have deflections anywere and in any direction as long as the marble is in "
     print "the upper left or right diagonal relative to the forward direction the laser is traveling. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower() 
+    hit_next() 
     
     print "3. Double Marble Reflection: "
     print "This yields the same result as the direct reflection, only is caused by 2 marbles instead of 1. "
@@ -178,10 +154,7 @@ def instructions():
     print "only this time there is also a marble in the left diagonal. "
     print "This causes the laser to be reflected back the way it came. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower() 
+    hit_next() 
 
     print "If that was confusing, it's ok! "
     print "Here is an example: "
@@ -190,37 +163,25 @@ def instructions():
     print "The laser will move up column 4 and get deflected by both marbles, "
     print "causing it to move back down column 4 as if it had just been reflected directly. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
+    hit_next()    
 
-    see_next = raw_input("> ")
-    see_next = see_next.lower()    
-
-    laser_display(demo_laser_in_3, demo_laser_out_3, "laser")
+    displays.laser_display(demo_laser_in_3, demo_laser_out_3, "laser")
     print "Here we can see the laser exiting out the same space we sent it in. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower() 
+    hit_next() 
 
     print "4. Nothing: "
     print "Lastly, if the laser does not come close to any marbles, it will just pass through. "
     print "I think this one is pretty self explanitory. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     print "Ok, now player 2 has the option to send another beam or guess where the marbles are hidden. "
     print "The object of the game is to end up with LESS points than your opponent. "
     print "Players will recieve 1 point per laser sent through the box. "
     print "If guessing marbles, the player will also recieve 2 points for every INCORRECTLY guessed marble. "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     print "After guessing the marbles correctly, "
     print "the players will switch turns. "
@@ -228,10 +189,7 @@ def instructions():
     print "After each person takes a turn guessing, the game will end "
     print "and the player with the LOWEST number of points will win! "
 
-    print "type 'next' or 'n' to see the next part of the instructions"
-
-    see_next = raw_input("> ")
-    see_next = see_next.lower()
+    hit_next()
 
     print "Best of luck! "
     print "Let's begin the game!"
@@ -845,7 +803,8 @@ def players_turn (player_total):
 
     #Set up the grid:
     grid = set_up_grid()
-    marble_display("no", marble_1, marble_2, marble_3)
+    #This sets the marble display with no marbles placed.
+    displays.marble_display("no", marble_1, marble_2, marble_3)
     
 
     #first player places marbles:
@@ -854,8 +813,8 @@ def players_turn (player_total):
     marble_3 = placing_one_marble(grid)
 
     grid = placing_marbles_in_grid(grid, marble_1, marble_2, marble_3) 
-
-    marble_display("yes", marble_1, marble_2, marble_3)
+    #displays the marbles as M's in the display grid
+    displays.marble_display("yes", marble_1, marble_2, marble_3)
 
 
     #Player 2's turn:
@@ -868,7 +827,7 @@ def players_turn (player_total):
         no_laser_in = []
         no_laser_out = []
 
-        laser_display(no_laser_in, no_laser_out, "demo")
+        displays.laser_display(no_laser_in, no_laser_out, "demo")
 
 
         #The first space player 2 chooses to send the laser
@@ -887,7 +846,7 @@ def players_turn (player_total):
 
         first_laser_display = [first_laser_space[0] + 1, first_laser_space[1] + 1]
         final_laser_display = [final_laser_space[0] + 1, final_laser_space[1] + 1]
-        laser_display(first_laser_display,final_laser_display, "laser")
+        displays.laser_display(first_laser_display,final_laser_display, "laser")
         #Adding one point per laser sent to the player's total.
         player_total += 1
         
@@ -921,468 +880,6 @@ def players_turn (player_total):
 
     return player_total
 
-
-
-#******************************************************************************#
-#                                  DISPLAY
-#*******************************************************************************#
-
-#This is the display for the marbles!
-
-def marble_display(marble_available, marble_1, marble_2, marble_3):
-    """prints available marble spaces"""
-
-
-
-    top_one = []
-    top_two = []
-    top_three = []
-    top_four = []
-    top_five = []
-
-    row_0 = []
-
-    row_1 = []
-    row_2 = []
-    row_3 = []
-    row_4 = []
-    row_5 = []
-    row_6 = []
-    row_7 = []
-    row_8 = []
-    row_9 = []
-
-    row_10 = []
-
-    bottom_five = []
-    bottom_four = []
-    bottom_three = []
-    bottom_two = []
-    bottom_one = []
-
-
-    column_space = "    "
-    marble_spaces = "  * "
-    marble_in_space = "  M "
-
-    grid = [top_one, top_two, top_three, top_four, top_five, \
-            row_0, row_1, row_2, row_3, row_4, row_5, \
-            row_6, row_7, row_8, row_9, row_10, \
-            bottom_five, bottom_four, bottom_three, bottom_two, bottom_one]
-
-
-
-    top_rows = [top_one, top_two, top_three, top_four, top_five]
-
-    main_rows = [row_1, row_2, row_3, row_4, row_5, \
-                 row_6, row_7, row_8, row_9]
-
-    upper_two = [row_1, row_2]
-    marble_rows = [row_3,row_4,row_5,row_6,row_7]
-    main_bottom_row = [row_8,row_9]
-
-    bottom_rows = [bottom_five, bottom_four, bottom_three, bottom_two, bottom_one]
-
-
-
-    #Divider row:
-
-    divider = "-----"
-    divider_row = []
-
-    i = 0
-    while i < 11:
-        divider_row.append(divider)
-        i += 1
-
-    #adding an extra dash between the side and the first divider because it works
-    divider_display = "  {}-{}{}{}{}{}{}{}{}{}{} " \
-                        .format(column_space,divider_row[1],divider_row[2],\
-                         divider_row[3],divider_row[4],divider_row[5],divider_row[6],\
-                         divider_row[7], divider_row[8], divider_row[9],column_space)
-
-
-
-
-
-    #Making every list in the top and bottom sections a list of spaces (column side)
-    for row in top_rows:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-         
-
-    for row in bottom_rows:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-          
-
-
-    #making the rows:
-
-    #row_0 and row_10:
-
-    row_0 = range(11)
-    row_10 = range(11)
-
-
-    #main rows (1-9)
-    #top two rows:
-    
-    for row in upper_two:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-
-    #2-7:
-
-    
-    for row in marble_rows:
-        i = 0
-        while i < 12:
-            if i < 3:
-                row.append(column_space)
-                i += 1
-            elif i > 2 and i < 8:
-                row.append(marble_spaces)
-                i += 1
-            else:
-                row.append(column_space)
-                i += 1
-
-    if marble_available == "yes":
-
-        marble_1_row = marble_1[0]
-        marble_1_column = marble_1[1]
-
-        marble_2_row = marble_2[0]
-        marble_2_column = marble_2[1]
-
-        marble_3_row = marble_3[0]
-        marble_3_column = marble_3[1]
-
-
-        main_rows[marble_1_row ][marble_1_column + 1] = marble_in_space
-        main_rows[marble_2_row ][marble_2_column + 1] = marble_in_space
-        main_rows[marble_3_row ][marble_3_column + 1] = marble_in_space
-
-
-
-
-    #bottom two rows:
-
-
-    for row in main_bottom_row:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-
-
-    #Displaying the rows:
-
-
-    for item in top_rows:
-        display_row = "  {}   {}   {}   {}   {}   {}   {}   {}  {}  {}  {}" \
-                       .format(item[0],item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], item[10] )
-        print display_row 
-
-
-
-
-    row_0_display = "         {}    {}    {}    {}    {}    {}    {}    {}    {}   " \
-                       .format(row_0[1],row_0[2],\
-                        row_0[3],row_0[4],row_0[5],row_0[6],\
-                        row_0[7], row_0[8], row_0[9])
-
-    print row_0_display
-    print divider_display
-
-    i = 1
-
-    for item in main_rows:
-
-        display_row = "    {} |{}|{}|{}|{}|{}|{}|{}|{}|{}| {}" \
-                        .format(i,item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], i)
-        print display_row
-        if i < 11:
-            print divider_display
-            i += 1
-
-
-    row_10_display = "         {}    {}    {}    {}    {}    {}    {}    {}    {}   " \
-                       .format(row_10[1],row_10[2],\
-                        row_10[3],row_10[4],row_10[5],row_10[6],\
-                        row_10[7], row_10[8], row_10[9])
-    print row_10_display
-
-
-
-    for item in bottom_rows:
-        display_row = "  {}   {}   {}   {}   {}   {}   {}   {}  {}  {}  {}" \
-                       .format(item[0],item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], item[10] )
-        print display_row 
-
-
-    return main_rows
-
-
-#******************************************************************************#
-#                                   DISPLAY
-#******************************************************************************#
-
-#Laser space displays!!
-
-def laser_display(in_laser, out_laser, laser_or_demo):
-
-    """Prints the display for showing available laser spaces"""
-
-
-    laser_mark = "  o "
-    column_space = "    "
-
-    right_arrow =  " -> "
-
-    vertical_dash = " |  "
-
-    top_point = " v  "
-
-    left_arrow =  " <- "
-
-    bottom_point = " ^  "
-
-
-
-    top_one = []
-    top_two = []
-    top_three = []
-    top_four = []
-    top_five = []
-
-    row_0 = []
-
-    row_1 = []
-    row_2 = []
-    row_3 = []
-    row_4 = []
-    row_5 = []
-    row_6 = []
-    row_7 = []
-    row_8 = []
-    row_9 = []
-
-    row_10 = []
-
-    bottom_five = []
-    bottom_four = []
-    bottom_three = []
-    bottom_two = []
-    bottom_one = []
-
-
-
-
-
-
-    grid = [top_one, top_two, top_three, top_four, top_five, \
-            row_0, row_1, row_2, row_3, row_4, row_5, \
-            row_6, row_7, row_8, row_9, row_10, \
-            bottom_five, bottom_four, bottom_three, bottom_two, bottom_one]
-
-
-
-    top_rows = [top_one, top_two, top_three, top_four, top_five]
-
-
-    main_rows = [row_2, row_3, row_4, row_5, \
-                 row_6, row_7, row_8]
-
-    grid_rows = [row_1,row_2, row_3, row_4, row_5, \
-                 row_6, row_7, row_8, row_9]
-
-    marble_rows = [row_3,row_4,row_5,row_6,row_7]
-
-    end_two_rows = [row_1, row_9]
-
-
-    
-
-    bottom_rows = [bottom_five, bottom_four, bottom_three, bottom_two, bottom_one]
-
-
-
-
-
-
-    divider = "-----"
-    divider_row = []
-
-    i = 0
-    while i < 11:
-        divider_row.append(divider)
-        i += 1
-
-    divider_display = "  {}-{}{}{}{}{}{}{}{}{}{} " \
-                        .format(column_space,divider_row[1],divider_row[2],\
-                         divider_row[3],divider_row[4],divider_row[5],divider_row[6],\
-                         divider_row[7], divider_row[8], divider_row[9],column_space)
-
-
-
-
-#Making every list in the top and bottom sections a list of spaces (column side)
-    for row in top_rows:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-         
-
-    for row in bottom_rows:
-        i = 0
-        while i < 12:
-            row.append(column_space)
-            i += 1
-          
-
-
-    #making the rows:
-
-    #row_0 and row_10:
-
-    row_0 = range(11)
-    row_10 = range(11)
-
-
-    #main rows (1-9)
-    #Edges
-
-    left_side_numbers = "    "
-    right_side_numbers = "    "
-
-    for row in end_two_rows:
-        i = 0
-        while i < 11:
-            if i == 0:
-                row.append(left_side_numbers)
-                i += 1
-            if i < 2:
-                row.append(column_space)
-                i += 1
-            elif i > 1 and i < 9:
-                row.append(laser_mark)
-                i += 1
-            elif i == 10:
-                row.append(right_side_numbers)
-                i += 1
-            else:
-                row.append(column_space)
-                i += 1
-
-    for row in main_rows:
-        i = 0
-        while i < 11:
-            if i == 1 or i == 9:
-                row.append(laser_mark)
-                i += 1
-            else:
-                row.append(column_space)
-                i += 1
-
-
-
-
-    if laser_or_demo == "laser":
-
-        #going in:
-
-        
-        if in_laser[0] == 1:
-            top_four[in_laser[1]] = vertical_dash
-            top_five[in_laser[1]] = top_point
-        elif in_laser[0] == 9:
-            bottom_four[in_laser[1]] = vertical_dash
-            bottom_five[in_laser[1]] = bottom_point
-        elif in_laser[1] == 1:
-            grid_rows[in_laser[0]-1][0] = right_arrow
-        elif in_laser[1] == 9:
-            grid_rows[in_laser[0]-1][10] = left_arrow
-
-        #going out:
-
-
-        if out_laser[0] == 1:
-            top_four[out_laser[1]] = bottom_point
-            top_five[out_laser[1]] = vertical_dash
-        elif out_laser[0] == 9:
-            bottom_four[out_laser[1]] = top_point
-            bottom_five[out_laser[1]] = vertical_dash
-        elif out_laser[1] == 1:
-            grid_rows[out_laser[0]-1][0] = left_arrow
-        elif out_laser[1] == 9:
-            grid_rows[out_laser[0]-1][10] = right_arrow
-
-
-
-
-    for item in top_rows:
-        display_row = "   {} {} {} {} {} {} {} {} {} {} {} " \
-                       .format(item[0],item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], item[10] )
-        print display_row 
-
-
-
-    row_0_display = "         {}    {}    {}    {}    {}    {}    {}    {}    {}   " \
-                       .format(row_0[1],row_0[2],\
-                        row_0[3],row_0[4],row_0[5],row_0[6],\
-                        row_0[7], row_0[8], row_0[9])
-
-    print row_0_display
-    print divider_display
-
-    
-
-
-
-    i = 0
-    for item in grid_rows:
-
-        display_row = "{}{} |{}|{}|{}|{}|{}|{}|{}|{}|{}| {}{}" \
-                        .format(item[0],i+1,item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], i+1,item[10])
-        print display_row
-        if i < 11:
-            print divider_display
-            i += 1
-
-
-    row_10_display = "         {}    {}    {}    {}    {}    {}    {}    {}    {}   " \
-                       .format(row_10[1],row_10[2],\
-                        row_10[3],row_10[4],row_10[5],row_10[6],\
-                        row_10[7], row_10[8], row_10[9])
-    print row_10_display
-
-
-
-    for item in bottom_rows:
-        display_row = "   {} {} {} {} {} {} {} {} {} {} {} " \
-                       .format(item[0],item[1],item[2],\
-                        item[3],item[4],item[5],item[6],\
-                        item[7], item[8], item[9], item[10] )
-        print display_row 
 
 
 #******************************************************************************#
@@ -1440,7 +937,7 @@ def play_game():
         will_you_continue = raw_input("> ")
         will_you_continue = will_you_continue.lower()
 
-        if will_you_continue == "no":
+        if will_you_continue == "no" or will_you_continue == "n":
             print "see you next time!"
             keep_playing = False
 
