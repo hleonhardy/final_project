@@ -758,7 +758,7 @@ def guess_or_send():
 
 
     while True:
-
+        #Making sure that they enter either send or guess and not something else.
         print "Would you like to send another beam or guess where the marbles are? (send/guess) "
         send_or_guess = raw_input("> ")
         send_or_guess = send_or_guess.lower()
@@ -878,9 +878,10 @@ def players_turn (player_total, whose_turn_marble, whose_turn_laser):
     #This sets the marble display with no marbles placed.
     displays.marble_display("no", marble_1, marble_2, marble_3)
     
-    #printing greatings
+    #printing messages:
     print "Ok {}! Time to place your marbles! ".format(whose_turn_marble)
-    print "Please select a space marked with a '*' to place your marbles. "
+    print "But first, {} close your eyes or look away until {} says you can come back! ".format(whose_turn_laser, whose_turn_marble)
+    print "{}, please select a space marked with a '*' to place your marbles. ".format(whose_turn_marble)
 
 
 
@@ -900,6 +901,7 @@ def players_turn (player_total, whose_turn_marble, whose_turn_laser):
     #This while loop, player_turn, is sending lasers until player_turn is turned to False 
     #(includes guessing, you can still send lasers after you guess)
     player_turn = True
+    i = 0
     while player_turn:
 
         #This will display the grid with available laser spaces
@@ -907,14 +909,17 @@ def players_turn (player_total, whose_turn_marble, whose_turn_laser):
         no_laser_out = []
 
         displays.laser_display(no_laser_in, no_laser_out, "demo")
+        #printing messages-but we only need this for the first laser shot (i=0)
+        if i == 0:
+            print "Ok {}. If you would like to see a picture of where your marbles are, ".format(whose_turn_marble)
+            print "scroll up to the previous display. "
+            print "Now, {}! It is your turn to shoot the laser into the box! ".format(whose_turn_laser)
 
-        print "Ok {}. If you would like to see a picture of where your marbles are, ".format(whose_turn_marble)
-        print "scroll up to the previous display. "
-        print "Now, {}! It is your turn to shoot the laser into the box! ".format(whose_turn_laser)
+        #prints this no matter how many lasers they have already sent.
         print "Please select an edge space (marked by an 'o') to shoot your laser.  "
 
 
-
+        i += 1
 
         #The first space player 2 chooses to send the laser
         first_laser_space = laser_shooting_loop(grid)
@@ -992,15 +997,9 @@ def play_game():
 
         #First player goes. 
         #Players turn returns the total score, this is assigned to player 1's score
-
-        # print "Player one places marbles and player 2 shoots laser"
-
         player_1_total = players_turn(player_1_total, "player 1", "player 2")
         
-        #Player 2 goes, same process as player one. (each person only goes once)
-
-        # print "Switch turns now!"
-        # print "Player 2 place marbles and player 1 shoots lasers"
+        #Second player's turn
         player_2_total = players_turn(player_2_total, "player 2", "player 1")
 
         #printing the total scores
@@ -1020,7 +1019,7 @@ def play_game():
 
         #asking if they want to play again:
 
-        print "Would you like to play again?"
+        print "Would you like to play again? (y/n)"
         will_you_continue = raw_input("> ")
         will_you_continue = will_you_continue.lower()
 
