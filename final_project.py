@@ -1,8 +1,9 @@
 #in displays.py we have marble display and laser display functions:
 import displays  
 
-
-#functions that will happen in the beginning of the game
+#******************************************************************************#
+#functions that will happen in the beginning of the game (before turns)
+#******************************************************************************#
 
 def set_up_grid():
     """This function will set up the grid and return the 2d list that is the grid"""
@@ -35,6 +36,22 @@ def set_up_grid():
     return grid 
 
 
+#This function allows us to make sure they enter an actual number when they're supposed to.
+def check_make_int():
+    """checks to see if the input is an integer and then converts it to an integer if it is"""
+    
+    loop_still_going = True
+    while loop_still_going:
+        number = raw_input("> ")
+        #checking to see if they have entered a digit or not so that we can change it to int
+        if number.isdigit() == True:
+            number = int(number)
+            loop_still_going = False
+        else:
+            print "Please enter an integer. "
+    
+    return number
+
 
 def hit_next():
     """breaks up the instructions by pausing and letting the user type n or next"""
@@ -44,7 +61,6 @@ def hit_next():
     print "type 'next' or 'n' to see the next part of the instructions"
     see_next = raw_input("> ")
     
-
 
 
 def instructions():
@@ -225,22 +241,23 @@ def greeting():
     
 
 #******************************************************************************#
+#functions having to do with the first player turn:
+#******************************************************************************#
 
 
-#functions having to do with the first player:
 #will use these for all 3 marbles separately
-
-
-
 def place_marble():
     """Asks where the player wants to place one marble, returns their potential marble coordinates"""
 
-    print "enter the row where you would like to place your marble"
-    marble_row = int(raw_input("> "))
-    print "enter the column where you would like to place your marble"
-    marble_column = int(raw_input("> "))
 
+    print "enter the row where you would like to place your marble"
+    marble_row = check_make_int()
+    print "enter the column where you would like to place your marble"
+    marble_column = check_make_int()
+    #since the index starts at 0 but our display starts at 1,
+    #This is to make the number they entered match the actual grid (not display)
     potential_marble_location = [marble_row - 1, marble_column - 1]
+
 
 
     return potential_marble_location
@@ -250,12 +267,15 @@ def place_marble():
 def check_marble_location(potential_marble_location,grid):
     """Checks to see if the potential marble space is an available space (0) and returns True or False"""
 
-    #-Note-maybe i should change this later into "available" or "unavailable" to stay consistent with other
-    #parts of the code-
-    #Marbles are not allowed in 1's, 2's, or 8's.
+    #Marbles are not allowed in 1's, 2's, or 8's (or 3's-which is a space occupied by a marble).
     #This is checking to see if where they placed a marble was a zero on the grid
-    if grid[potential_marble_location[0]][potential_marble_location[1]] == 0:
-        available_space = True
+
+    if potential_marble_location[0] < 9 and potential_marble_location[1] < 9:
+
+        if grid[potential_marble_location[0]][potential_marble_location[1]] == 0:
+            available_space = True
+        else:
+            available_space = False
     else:
         available_space = False 
 
@@ -268,52 +288,61 @@ def placing_one_marble(grid):
     """obtaining appropriate marble location and return the coordinates"""
 
     marble_not_placed = True 
-
+    #Checks to make sure that the user is inputting a valid location.
     while marble_not_placed:
+        #User inputs location of marble they want to place:
         potential_marble_location = place_marble()
+        #program checks to see if there is a zero (True) or anything else(False)
         available_space = check_marble_location(potential_marble_location,grid)
 
+        #if the space is available, marble will be placed there and the grid will be updated with a 3
         if available_space == True:
                 
             marble_location = potential_marble_location
+            #note: even though this doesn't return the grid it is still able to update it 
+            #because grid is returned inside the function placing_marbles_in_grid
+            grid = placing_marbles_in_grid(grid, marble_location)
 
             marble_not_placed = False
         else:
             print "Please pick a valid space."
 
 
-
     return marble_location 
 
 
 
-def placing_marbles_in_grid(grid,marble_1,marble_2,marble_3):
+def placing_marbles_in_grid(grid,marble):
     """Replaces the 0's in the grid with 3's so they can be identified as marbles later, returns grid"""
 
-    grid[marble_1[0]][marble_1[1]] = 3
-    grid[marble_2[0]][marble_2[1]] = 3
-    grid[marble_3[0]][marble_3[1]] = 3
-
+    grid[marble[0]][marble[1]] = 3
 
     return grid 
 
 
 
 #******************************************************************************#
-
 #functions that have to do with the second player:
+#******************************************************************************#
 
 
 
 def ask_to_shoot_laser():
     """This function will ask which space the player wants to send the laser, returns chosen coordinates"""
 
-    print "Please enter the row where you would like to shoot your laser"
-    row = int(raw_input("> "))
-    print "Please enter the column where you would like to shoot your laser"
-    column = int(raw_input("> "))
+    while True:
 
-    potential_laser_space = [row-1,column-1]
+        print "Please enter the row where you would like to shoot your laser"
+        row = check_make_int()
+        print "Please enter the column where you would like to shoot your laser"
+        column = check_make_int()
+
+        if row < 10 and column < 10:
+            #-1 on both because display starts at 1 and grid index starts at 0
+            potential_laser_space = [row-1,column-1]
+            break
+        else:
+            print "Please enter a valid space. "
 
     return potential_laser_space 
 
@@ -347,19 +376,24 @@ def laser_shooting_loop(grid):
     laser_space = []
     invalid_laser_space = True
 
-
+    #Makes sure the user has picked a valid space for the laser
     while invalid_laser_space:
         potential_laser_space = ask_to_shoot_laser()
         laser_space_verdict = check_laser_space(potential_laser_space,grid)
+
+        #creating variables to make it look better:
+
         row = potential_laser_space[0] 
         column = potential_laser_space[1]
+
+        #if the space for the laser is available it will return the coordinates
         if laser_space_verdict == 1:
             laser_space = [row, column]
             invalid_laser_space = False
         else:
             print "please enter a valid space"
 
-    print laser_space
+
     return laser_space
 
 
@@ -385,9 +419,8 @@ def return_first_direction(laser_space):
 
 
 #******************************************************************************#
-
-
 #These next functions are kind of like the "laser's turn:""
+#******************************************************************************#
 
 
 
@@ -409,7 +442,6 @@ def move_one_space_forward(laser_space, direction):
         laser_space = [laser_space[0],laser_space[1]-1]
 
 
-    print laser_space
     return laser_space     
 
 
@@ -432,6 +464,7 @@ def produce_left_diagonal(laser_space, direction):
         #row plus 1, column minus 1
         left_diagonal = [laser_space[0]+1, laser_space[1]-1]
 
+
     return left_diagonal
 
 
@@ -450,6 +483,7 @@ def produce_right_diagonal(laser_space, direction):
     elif direction == "left":
         #row minus 1, column minus 1
         right_diagonal = [laser_space[0]-1, laser_space[1]-1]
+
 
     return right_diagonal
 
@@ -479,22 +513,22 @@ def check_diagonals(grid, laser_space, direction):
 
     #both diagonals occupied by a marble:
     if grid[left_row][left_column] == 3 and grid[right_row][right_column] == 3:
-        print "both diagonals are occupied by a marble"
+        # print "both diagonals are occupied by a marble"
         diagonal = "both_marble"
 
     #only the right diagonal is occupied by a marble:
     elif grid[right_row][right_column] == 3:
-        print "right diagonal is occupied by a marble"
+        # print "right diagonal is occupied by a marble"
         diagonal = "right_marble"
 
     #only the left diagonal is occupied by a marble:
     elif grid[left_row][left_column] == 3:
-        print " left diagonal is occupied by a marble"
+        # print " left diagonal is occupied by a marble"
         diagonal = "left_marble"
 
     #both diagonals are an outside space:
     elif grid[left_row][left_column] == 1 and grid[right_row][right_column] == 1:
-        print "both diagonals are outside spaces"
+        # print "both diagonals are outside spaces"
         diagonal = "both_outside"
 
     #The same result as outside spaces is also true for if the laser is moving through the outside spaces
@@ -503,10 +537,10 @@ def check_diagonals(grid, laser_space, direction):
 
     elif grid[left_row][left_column] == 1 or grid[right_row][right_column] == 1:
         if grid[left_row][left_column] == 2 or grid[right_row][right_column] == 2:
-            print "One diagonal is an outside space and the other is an edge."
+            # print "One diagonal is an outside space and the other is an edge."
             diagonal = "both_outside"
         elif grid[left_row][left_column] == 0 or grid[right_row][right_column] == 0:
-            print "one is an outside space and one is unoccupied"
+            # print "one is an outside space and one is unoccupied"
             diagonal = "both_empty"
     elif grid[left_row][left_column] == 2 and grid[right_row][right_column] == 2:
         diagonal = "both_edges"
@@ -514,12 +548,11 @@ def check_diagonals(grid, laser_space, direction):
     #otherwise both of them are empty =]
     else:
         diagonal = "both_empty"        
-        print "both are zeros"
+        # print "both are zeros"
 
 
     
     return diagonal
-
 
 
 
@@ -560,7 +593,7 @@ def change_direction_one_marble(diagonals, direction):
         new_direction = "up"
 
 
-    print "new direction: {}".format(new_direction)
+    # print "new direction: {}".format(new_direction)
     return new_direction
 
 
@@ -579,7 +612,7 @@ def move_forward_two(laser_space, direction):
     elif direction == "left": #row isn't changing, column is going left two
         laser_space = [laser_space[0],laser_space[1]-2]
 
-    print laser_space
+    # print laser_space
     return laser_space 
     
 
@@ -604,7 +637,7 @@ def produce_forward_space(laser_space, direction):
     elif direction == "left": #row isn't changing, column is left one
         forward_space = [laser_space[0],laser_space[1]-1]
 
-    print "forward_space is {}".format(forward_space)
+    # print "forward_space is {}".format(forward_space)
     return forward_space
 
 
@@ -616,15 +649,15 @@ def check_foward_space(forward_space, grid):
     forward_column = forward_space[1]
 
     if grid[forward_row][forward_column] == 3:
-        print "There's a marble in the forward space"
+        # print "There's a marble in the forward space"
         forward_space = "marble"
 
     elif grid[forward_row][forward_column] == 2:
-        print "This is an edge space."
+        # print "This is an edge space."
         forward_space = "edge"
 
     else:
-        print "Theres nothing in the forward space"
+        # print "Theres nothing in the forward space"
         forward_space = "unoccupied"
 
 
@@ -661,25 +694,25 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
         if diagonals == "both_marble":
             #reflection will cause the laser to go back to the initial space, the loop will end
             final_laser_space = reflection(first_laser_space)
-            print final_laser_space
+            # print final_laser_space
             laser_still_moving = False
 
         elif diagonals == "right_marble" or diagonals == "left_marble":
             #change direction accordingly, then this will go back to check diagonals
             direction = change_direction_one_marble(diagonals,direction)
-            print "We have changed direction"
-            print "laser space is {}".format(laser_space)
+            # print "We have changed direction"
+            # print "laser space is {}".format(laser_space)
 
         elif diagonals == "both_outside":
             #This will first move forward two spaces and that will be the final laser space
             final_laser_space = move_forward_two(laser_space, direction)
-            print "final laser space is {}".format(final_laser_space)
+            # print "final laser space is {}".format(final_laser_space)
             laser_still_moving = False
 
         elif diagonals == "both_edges":
             #since both of the diagonals are edges the laser space has to move forward one space only
             final_laser_space = move_one_space_forward(laser_space, direction)
-            print "final_laser_space is {}".format(final_laser_space)
+            # print "final_laser_space is {}".format(final_laser_space)
             laser_still_moving = False
 
         elif diagonals == "both_empty":
@@ -690,7 +723,7 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
             #if forward space is unoccupied, move one forward and check diagonals again
             if forward_space == "marble":
                 final_laser_space = reflection(first_laser_space)
-                print "final laser space is {}".format(final_laser_space)
+                # print "final laser space is {}".format(final_laser_space)
                 laser_still_moving = False
 
             elif forward_space == "edge":
@@ -699,7 +732,7 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
 
             elif forward_space == "unoccupied":
                 laser_space = move_one_space_forward(laser_space, direction)
-                print "new laser space is {}".format(laser_space)
+                # print "new laser space is {}".format(laser_space)
 
 
     return final_laser_space
@@ -708,15 +741,8 @@ def checking_moving_loop(laser_space, first_laser_space, grid, direction):
 
 
 #******************************************************************************#
-
-
-def show_ending_location(final_laser_space):
-    """this function will tell the user the final space of the laser"""
-
-    #for now...
-
-    print final_laser_space
-
+#After the laser has taken its turn:
+#******************************************************************************#
 
 
 def add_one_to_score(player_total):
@@ -733,7 +759,7 @@ def guess_or_send():
 
     while True:
 
-        print "Would you like to send another beam or guess where the mables are? "
+        print "Would you like to send another beam or guess where the marbles are? (send/guess) "
         send_or_guess = raw_input("> ")
         send_or_guess = send_or_guess.lower()
 
@@ -759,25 +785,65 @@ def guess_marble_locations(grid):
     #I could have done this better
     #Fix this later to catch if they enter an invalid number 
 
-    #gathering the coordinates for the marble guesses
-    print "First marble: "
-    print "Enter the row of your first marble"
-    first_marble_row = int(raw_input("> "))
-    print "Enter the column of your first marble"
-    first_marble_column = int(raw_input("> "))
-    print "Second marble: "
-    print "Enter the row of your second marble"
-    second_marble_row = int(raw_input("> "))
-    print "Enter the column of your second marble"
-    second_marble_column = int(raw_input("> "))
-    print "Third marble: "
-    print "Enter the row of your third marble "
-    third_marble_row = int(raw_input("> "))
-    print "Enter the column of your third marble"
-    third_marble_column = int(raw_input("> "))
+    while True:
+        #gathering the coordinates for the marble guesses
+        print "First marble: "
+        print "Enter the row of your first marble"
+        first_marble_row = check_make_int()
+        print "Enter the column of your first marble"
+        first_marble_column = check_make_int()
 
+        if first_marble_row < 10 and first_marble_column < 10:
+            break
+        else:
+            print "Please enter a valid location. "
+    
+    #Checking to make sure that the user enters 3 different spaces:
+
+    while True:
+
+        print
+        print "Second marble: "
+        print "Enter the row of your second marble"
+        second_marble_row = check_make_int()
+        print
+        print "Enter the column of your second marble"
+        second_marble_column = check_make_int()
+
+        if first_marble_row == second_marble_row and first_marble_column == second_marble_column:
+            print "You have already chosen this space. Please choose a different space. "
+        elif second_marble_row < 10 and second_marble_column < 10:
+            break
+        else:
+            print "please enter a valid location."
+
+
+
+    while True: 
+
+        print
+        print "Third marble: "
+        print "Enter the row of your third marble "
+        third_marble_row = check_make_int()
+        print
+        print "Enter the column of your third marble"
+        third_marble_column = check_make_int()
+
+        if third_marble_row == second_marble_row and third_marble_column == second_marble_column:
+            print "You have already chosen this space. Please choose a different space. "
+        elif first_marble_row == third_marble_row and first_marble_column == third_marble_column:
+            print "You have already chosen this space. Please choose a different space. "
+        elif third_marble_row < 10 and third_marble_column < 10:
+            break
+        else:
+            print "Please enter a valid location." 
+
+
+
+    #Starting off with no marbles guessed incorrectly. because they haven't guessed yet.
     num_incorrect_marbles = 0
 
+    #If their first marble space isn't occupied by a marble (3):
     if grid [first_marble_row-1][first_marble_column-1] != 3:
         num_incorrect_marbles += 1
     if grid[second_marble_row-1][second_marble_column-1]!= 3:
@@ -785,17 +851,23 @@ def guess_marble_locations(grid):
     if grid[third_marble_row-1][third_marble_column-1] != 3:
         num_incorrect_marbles += 1
 
-    print "num incorrect marbles = {}".format(num_incorrect_marbles)    
+    print
+    print "You have guessed {} marbles incorrectly.".format(num_incorrect_marbles)    
+    print 
     return num_incorrect_marbles
 
     
 #******************************************************************************#
+#Function for one player's turn:
+#******************************************************************************#
 
 
-def players_turn (player_total):
+def players_turn (player_total, whose_turn_marble, whose_turn_laser):
     """first player places marbles, second player guesses where marbles are-returns first player total"""
 
-
+    #These are for the display grid.
+    #Since we aren't actually using any marble positions (the "no" part),
+    #There doesn't have to be anything here, just a variable.
     marble_1 = []
     marble_2 = []
     marble_3 = []
@@ -806,14 +878,21 @@ def players_turn (player_total):
     #This sets the marble display with no marbles placed.
     displays.marble_display("no", marble_1, marble_2, marble_3)
     
+    #printing greatings
+    print "Ok {}! Time to place your marbles! ".format(whose_turn_marble)
+    print "Please select a space marked with a '*' to place your marbles. "
+
+
+
 
     #first player places marbles:
+    #placing_one_marble also changes the grid space to a '3' so that they can't place a marble there again.
     marble_1 = placing_one_marble(grid)
     marble_2 = placing_one_marble(grid)
     marble_3 = placing_one_marble(grid)
 
-    grid = placing_marbles_in_grid(grid, marble_1, marble_2, marble_3) 
-    #displays the marbles as M's in the display grid
+    # grid = placing_marbles_in_grid(grid, marble_1, marble_2, marble_3) 
+    # #displays the marbles as M's in the display grid
     displays.marble_display("yes", marble_1, marble_2, marble_3)
 
 
@@ -828,6 +907,13 @@ def players_turn (player_total):
         no_laser_out = []
 
         displays.laser_display(no_laser_in, no_laser_out, "demo")
+
+        print "Ok {}. If you would like to see a picture of where your marbles are, ".format(whose_turn_marble)
+        print "scroll up to the previous display. "
+        print "Now, {}! It is your turn to shoot the laser into the box! ".format(whose_turn_laser)
+        print "Please select an edge space (marked by an 'o') to shoot your laser.  "
+
+
 
 
         #The first space player 2 chooses to send the laser
@@ -862,7 +948,7 @@ def players_turn (player_total):
                 num_incorrect_marbles = guess_marble_locations(grid)
                 #if they have guessed all the marbles correctly then the whole turn is over
                 if num_incorrect_marbles == 0:
-                    print player_total
+                    # print player_total
                     player_turn = False  
                     guessing = False
 
@@ -871,7 +957,7 @@ def players_turn (player_total):
                     added_points = num_incorrect_marbles*2
                     player_total = player_total + added_points
  
-                    print player_total
+                    # print player_total
 
             #If they didn't choose to guess, setting guess = False will allow the "send laser" loop to begin again.
             else:
@@ -885,7 +971,7 @@ def players_turn (player_total):
 #******************************************************************************#
 #                             PLAYING GAME LOOP
 #******************************************************************************#
-
+#Putting together the player's turn function so that both players play
 #The function that plays the game:
 
 def play_game():
@@ -907,14 +993,15 @@ def play_game():
         #First player goes. 
         #Players turn returns the total score, this is assigned to player 1's score
 
-        print "Player one places marbles and player 2 shoots laser"
-        player_1_total = players_turn(player_1_total)
+        # print "Player one places marbles and player 2 shoots laser"
+
+        player_1_total = players_turn(player_1_total, "player 1", "player 2")
         
         #Player 2 goes, same process as player one. (each person only goes once)
 
-        print "Switch turns now!"
-        print "Player 2 place marbles and player 1 shoots lasers"
-        player_2_total = players_turn(player_2_total)
+        # print "Switch turns now!"
+        # print "Player 2 place marbles and player 1 shoots lasers"
+        player_2_total = players_turn(player_2_total, "player 2", "player 1")
 
         #printing the total scores
 

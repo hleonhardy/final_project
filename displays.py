@@ -7,6 +7,10 @@
 def marble_display(marble_available, marble_1, marble_2, marble_3):
     """prints available marble spaces"""
 
+    #This is going to be appended later
+    #Setting up the top rows (top three are going to end up being nothing but the top_four and top_five
+    # can be changed to arrows-this was more for doing the laser display and not the marble display)
+    #This is also true for the bottom rows.
 
 
     top_one = []
@@ -35,10 +39,11 @@ def marble_display(marble_available, marble_1, marble_2, marble_3):
     bottom_two = []
     bottom_one = []
 
-
+    #These are what will occupy our spaces.
     column_space = "    "
     marble_spaces = "  * "
     marble_in_space = "  M "
+
 
     grid = [top_one, top_two, top_three, top_four, top_five, \
             row_0, row_1, row_2, row_3, row_4, row_5, \
@@ -208,7 +213,7 @@ def marble_display(marble_available, marble_1, marble_2, marble_3):
                         item[7], item[8], item[9], item[10] )
         print display_row 
 
-
+    #why did i return this?
     return main_rows
 
 
@@ -222,6 +227,7 @@ def laser_display(in_laser, out_laser, laser_or_demo):
 
     """Prints the display for showing available laser spaces"""
 
+    #what will take up the spaces:
 
     laser_mark = "  o "
     column_space = "    "
